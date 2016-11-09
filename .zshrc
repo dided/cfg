@@ -83,4 +83,4 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 source  ~/powerlevel9k/powerlevel9k.zsh-theme
-alias config='/usr/bin/git --git-dir=/Users/melgaafary/.cfg/ --work-tree=/Users/melgaafary'
+config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
