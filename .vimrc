@@ -76,15 +76,8 @@ set history=1000
 " Auto reload file when changed
 set autoread
 
-" Use arrow keys to change buffers
-noremap <left> :bp<CR>
-noremap <right> :bn<CR>
-
 " Line numbers
 set nu
-
-" Switch between buffers without saving
-set hidden
 
 " Auto fold code
 set foldenable
@@ -117,6 +110,12 @@ set smartcase
 
 " show matching brackets/parenthesis
 set showmatch
+" MacVim disable error sounds
+if has("gui_macvim")
+    autocmd GUIEnter * set vb t_vb=
+endif
+
+
 
 " =============== Indentations ======================
 "Use spaces instead of tabs
@@ -143,14 +142,17 @@ set wrap "Wrap lines
 map <space> /
 map <c-space> ?
 
+" Switch between buffers without saving
+set hidden
+
 " Disable highlight
 map <silent> <leader>/ :noh<cr>
 
-" Smart way to move between windows
-map <C-j> <C-W>j
-map <C-k> <C-W>k
-map <C-h> <C-W>h
-map <C-l> <C-W>l
+" Better way to move between windows
+noremap <silent> <leader>h :wincmd h<CR>
+noremap <silent> <leader>j :wincmd j<CR>
+noremap <silent> <leader>k :wincmd k<CR>
+noremap <silent> <leader>l :wincmd l<CR>
 
 " Close the current buffer
 map <leader>bd :Bclose<cr>:tabclose<cr>gT
@@ -159,8 +161,8 @@ map <leader>bd :Bclose<cr>:tabclose<cr>gT
 map <leader>ba :bufdo bd<cr>
 
 " Next and Previous buffer
-map <leader>l :bnext<cr>
-map <leader>h :bprevious<cr>
+map <left> :bnext<cr>
+map <right> :bprevious<cr>
 
 " Return to last edit position when opening files (You want this!)
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
