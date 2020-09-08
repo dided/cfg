@@ -22,6 +22,7 @@ Plugin 'kien/ctrlp.vim'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'bling/vim-bufferline'
+Plugin 'Valloric/YouCompleteMe'
 
 " JavaScript specific
 Plugin 'groenewege/vim-less'
@@ -29,10 +30,19 @@ Plugin 'isRuslan/vim-es6'
 Plugin 'mxw/vim-jsx'
 Plugin 'flazz/vim-colorschemes'
 Plugin 'pangloss/vim-javascript'
+Plugin 'othree/yajs.vim'
 Plugin 'taxilian/vim-web-indent'
+Plugin 'moll/vim-node'
+Plugin 'epilande/vim-es2015-snippets'
+Plugin 'epilande/vim-react-snippets'
+Plugin 'prettier/vim-prettier'
+Plugin 'leafgarland/typescript-vim'
+Plugin 'peitalin/vim-jsx-typescript'
+
 
 " HTML
 Plugin 'rstacruz/sparkup'
+
 
 call vundle#end()
 
@@ -43,7 +53,20 @@ filetype plugin indent on
 " Sparkup config for JSX
 autocmd FileType javascript.jsx runtime! ftplugin/html/sparkup.vim
 
+" MUcomplete auto complete
+set completeopt+=menuone
+set completeopt+=noselect
+set shortmess+=c   " Shut off completion messages
+set belloff+=ctrlg " If Vim beeps during completion
+let g:mucomplete#enable_auto_at_startup = 1
+
 " =============== General Settings ======================
+set runtimepath^=~/.vim/bundle/ctrlp.vim
+let g:ctrlp_working_path_mode = 'ra'
+let g:ctrlp_custom_ignore = 'node_modules'
+
+
+
 " Change our leader.
 let mapleader = ','
 let g:mapleader = ','
@@ -56,9 +79,6 @@ inoremap jk <esc>
 
 "Fast saving
 nmap <leader>w :w!<cr>
-
-" Sudo save
-command W w !sudo tee % > /dev/null
 
 " Forget being compatible with good ol' vi
 set nocompatible
@@ -125,8 +145,8 @@ set expandtab
 set smarttab
 
 " 1 tab == 4 spaces
-set shiftwidth=4
-set tabstop=4
+set shiftwidth=2
+set tabstop=2
 
 " Linebreak on 500 characters
 set lbr
@@ -167,6 +187,9 @@ map <right> :bprevious<cr>
 " Return to last edit position when opening files (You want this!)
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
+" =============== Auto complete ======================
+let g:ycm_filepath_blacklist = {}
+
 " =============== Statusline -Airline-  ======================
 "Always show statusline
 set laststatus=2
@@ -179,7 +202,11 @@ let g:airline#extensions#bufferline#overwrite_variables = 1
 let g:airline#extensions#branch#enabled = 1
 let g:airline#extensions#branch#empty_message = 'No Git here.'
 let g:airline#extensions#branch#displayed_head_limit = 10
-let g:airline_theme='wombat'
+let g:airline_theme='bubblegum'
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
+let g:airline#extensions#tabline#left_sep = ' '
+let g:airline#extensions#tabline#left_alt_sep = '|'
 
 
 " =============== Colors ======================
@@ -200,9 +227,8 @@ let NERDTreeIgnore=['\.pyc$', '\.swp$', '\.swp$']
 
 " Ultisnips config
 let g:UltiSnipsSnippetsDir = "~/.vim/ultisnips"
-let g:UltiSnipsExpandTrigger="<tab>"
-let g:UltiSnipsJumpForwardTrigger="<tab>"
-let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
+let g:UltiSnipsExpandTrigger="<C-j>"
+let g:UltiSnipsListSnippets="<C-s-j>"
 
 " =============== Functions ======================
 " Shift-like window resizing
@@ -265,3 +291,11 @@ nnoremap <S-h> :call ShiftResize('h', 1)<CR>
 nnoremap <S-j> :call ShiftResize('j', 1)<CR>
 nnoremap <S-k> :call ShiftResize('k', 1)<CR>
 nnoremap <S-l> :call ShiftResize('l', 1)<CR>
+set tags=tags
+
+" =================== Prettier ====================
+let g:prettier#autoformat = 0
+autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html PrettierAsync
+autocmd FileType typescript setlocal formatprg=prettier\ --parser\ typescript
+
+
